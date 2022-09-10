@@ -3,14 +3,28 @@ import { View, Text, StyleSheet, TextInput, Platform, FlatList, StatusBar } from
 import { Button } from "../components/Button";
 import { SkillCard } from "../components/SkillCard";
 
+interface SkillData{
+id: string;
+name: string;
+}
 export default function Home() {
   const [newSkill, setNewSkill] = useState('');
-  const [mySkills, setMySkills] = useState([]);
+  const [mySkills, setMySkills] = useState<SkillData[]>([]);
   const [greetting, setGreetting] = useState('');
 
   function handleAddNewSkill() {
-    setMySkills(oldState => [...oldState, newSkill]);
+    const data ={
+      id: String(new Date().getTime()),
+      name: newSkill
+    }
+    setMySkills(oldState => [...oldState, data]);
   }
+function handleRemoveSkill(id: string){
+setMySkills(oldState => oldState.filter(
+  skill => skill.id !== id
+));
+}
+
 useEffect(()=> {
   const currentHour = new Date().getHours();
   if (currentHour < 12){
@@ -33,15 +47,19 @@ useEffect(()=> {
         placeholderTextColor='#555'
         onChangeText={setNewSkill}
       />
-      <Button onPress={handleAddNewSkill} />
+      <Button onPress={handleAddNewSkill} activeOpacity={0.7} title='add' />
+     
       <Text style={[styles.title, { marginVertical: 50 }]}>
         MY SKILLS
       </Text>
       <FlatList
         data={mySkills}
-        keyExtractor={item => item}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <SkillCard kill={item} />
+          <SkillCard 
+          skill={item.name} 
+          onPress={() => handleRemoveSkill(item.id)}
+          />
 
         )}
       />
@@ -53,7 +71,7 @@ useEffect(()=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    
     paddingVertical: 70,
     paddingHorizontal: 30,
     backgroundColor: '#121015'
