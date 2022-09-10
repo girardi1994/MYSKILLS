@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Platform, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Platform, FlatList } from 'react-native'
 import { Button } from "../components/Button";
 import { SkillCard } from "../components/SkillCard";
 
@@ -8,7 +8,7 @@ export default function Home() {
   const [mySkills, setMySkills] = useState([]);
 
   function handleAddNewSkill() {
-   setMySkills(oldState => [...oldState, newSkill]);
+    setMySkills(oldState => [...oldState, newSkill]);
   }
 
   return (
@@ -20,15 +20,21 @@ export default function Home() {
         placeholderTextColor='#555'
         onChangeText={setNewSkill}
       />
-      <Button onPress={handleAddNewSkill}/>
+      <Button onPress={handleAddNewSkill} />
       <Text style={[styles.title, { marginVertical: 50 }]}>
         MY SKILLS
       </Text>
-      {
-        mySkills.map(skill => (
-          <SkillCard skill={skill}/>
-        ))}
+      <FlatList
+        data={mySkills}
+        keyExtractor={item => item}
+        renderItem={({ item }) => (
+          <SkillCard kill={item} />
+
+        )}
+      />
+
     </View>
+
   )
 }
 const styles = StyleSheet.create({
