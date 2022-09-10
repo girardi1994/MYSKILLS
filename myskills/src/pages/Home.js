@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, Platform, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Platform, FlatList, StatusBar } from 'react-native'
 import { Button } from "../components/Button";
 import { SkillCard } from "../components/SkillCard";
 
@@ -24,6 +24,7 @@ useEffect(()=> {
 }, [])
   return (
     <View style={styles.container}>
+     
       <Text style={styles.title}>Ricardo Girardi</Text>
       <Text style={styles.greetting}>{greetting}</Text>
       <TextInput
